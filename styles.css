@@ -1,0 +1,44 @@
+* {
+  box-sizing: border-box;
+  margin: 0px;
+}
+
+body {
+  background-color: #1f2a36;
+  color: aliceblue;
+}
+
+#StopWatch {
+  text-align: center;
+  background-color: black;
+  width: 100%;
+  max-width: 500px;
+  margin: 4rem auto;
+  padding: 1rem 2rem;
+  border-radius: 1rem;
+}
+
+.num {
+  font-size: 5rem;
+}
+
+.ish {
+  font-size: 5rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+}
+
+.button {
+  padding: 1rem;
+  font-size: 1rem;
+  background-color: red;
+  color: white;
+  border: 0;
+}
+
+#laps {
+  margin-top: 1rem;
+  color: navy;
+  background-color: whitesmoke;
+  border-radius: 1rem;
+}
