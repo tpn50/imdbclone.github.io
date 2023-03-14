@@ -1,124 +1,92 @@
-//Timer
+const wrapper = document.getElementById("wrapper");
+const title = document.getElementById("title");
+const submit = document.getElementById("submit");
 
-let hr = document.getElementById("hr");
-let min = document.getElementById("min");
-let sec = document.getElementById("sec");
-let msec = document.getElementById("ms");
+const key = document.getElementById("title");
+const list = document.getElementById("list");
+const lists = document.getElementsByClassName("lists");
+const listMovie = document.getElementsByClassName("list-movie");
+//console.log(title);
 
-// Buttons
+key.addEventListener("keyup", () => {
+  const s = title.value;
+  const movieTitle = s;
+  const apiKey = "dd5c0c00";
 
-let resetButton = document.getElementById("reset");
-let startButton = document.getElementById("start");
-let lapButton = document.getElementById("lap");
+  const url = `http://www.omdbapi.com/?apikey=${apiKey}&t=${encodeURIComponent(
+    movieTitle
+  )}`;
 
-//Outline
-let stopwatch = document.getElementById("StopWatch");
-// Initial
+  console.log(movieTitle);
 
-let count = 0;
-let hours = 0;
-let minutes = 0;
-let seconds = 0;
-let millisec = 0;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.Title != undefined) {
+        //console.log(data.Title);
+        let movieName = data.Title;
+        let moviePoster = data.Poster;
+        const lists = document.createElement("div");
+        lists.classList.add("lists");
+        lists.innerHTML = `<a href="" class="list-movie" style="text-decoration: none">${movieName}</a><img src=${moviePoster} class="list-img"> <button>fav</button>`;
+        list.appendChild(lists);
+      }
+    });
+});
 
-hr.innerText = "00";
-min.innerText = "00";
-sec.innerText = "00";
-msec.innerText = "00";
-
-let running = false;
-
-// start && stop
-
-startButton.addEventListener("click", start);
-function start() {
-  if (!running) {
-    myInterval = setInterval(increment, 10);
-  } else {
-    clearInterval(myInterval);
+submit.addEventListener("click", showDetails);
+if (lists) {
+  for (let i = 0; i < lists.length; i++) {
+    lists[i].addEventListener("click", showDetailsList);
   }
-  running = !running;
 }
 
-function increment() {
-  millisec++;
-  if (millisec == 100) {
-    seconds++;
-    millisec = 0;
-  }
+//console.log(lists);
+/* Show Details Function................*/
 
-  if (seconds == 60) {
-    minutes++;
-    seconds = 0;
-    millisec = 0;
-  }
+function showDetails() {
+  list.style.display = "none";
+  // wrapper.removeChild(list);
+  console.log(title.value);
+  const s = title.value;
+  const movieTitle = s;
+  const apiKey = "dd5c0c00";
 
-  if (minutes == 60) {
-    minutes++;
-    seconds = 0;
-    millisec = 0;
-  }
+  const url = `http://www.omdbapi.com/?apikey=${apiKey}&t=${encodeURIComponent(
+    movieTitle
+  )}`;
 
-  if (hours < 10) {
-    hr.innerText = "0" + hours;
-  } else {
-    hr.innerText = hours;
-  }
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
 
-  if (minutes < 10) {
-    min.innerText = "0" + minutes;
-  } else {
-    min.innerText = minutes;
-  }
+      let movieName = data.Title;
+      let movieYear = data.Year;
+      let moviePlot = data.Plot;
+      let movieRating = data.Ratings[0].Value;
+      let moviePoster = data.Poster;
 
-  if (seconds < 10) {
-    sec.innerText = "0" + seconds;
-  } else {
-    sec.innerText = seconds;
-  }
-
-  if (millisec < 10) {
-    msec.innerText = "0" + millisec;
-  } else {
-    msec.innerText = millisec;
-  }
-  //min.innerText = minutes;
-  // sec.innerText = seconds;
-  // msec.innerText = millisec;
+      const poster = document.createElement("div");
+      poster.innerHTML = `<img src="${moviePoster}" />`;
+      wrapper.appendChild(poster);
+      const movie = document.createElement("div");
+      movie.innerHTML = `<h2>${movieName}</h2>`;
+      wrapper.appendChild(movie);
+      const year = document.createElement("div");
+      year.innerHTML = `<h3>${movieYear}</h3>`;
+      wrapper.appendChild(year);
+      const plot = document.createElement("div");
+      plot.innerHTML = `<p>${moviePlot}</p>`;
+      wrapper.appendChild(plot);
+      const rating = document.createElement("div");
+      rating.innerHTML = `<p>${movieRating}</p>`;
+      wrapper.appendChild(rating);
+    })
+    .catch((error) => console.error(error));
+  //console.log(lists);
 }
 
-//lap
-
-lapButton.addEventListener("click", lap);
-
-function lap() {
-  var d = document.createElement("div");
-  d.id = "laps";
-  d.innerHTML = document.getElementById("time").innerHTML;
-  stopwatch.appendChild(d);
-  count++;
-  console.log(count);
-}
-
-// Reset Button
-
-resetButton.addEventListener("click", reset);
-function reset() {
-  hours = 00;
-  minutes = 00;
-  seconds = 00;
-  millisec = 00;
-  running = false;
-
-  hr.innerText = "00";
-  min.innerText = "00";
-  sec.innerText = "00";
-  msec.innerText = "00";
-
-  clearInterval(myInterval);
-
-  while (count) {
-    document.querySelector("#laps").remove();
-    count--;
-  }
+function showDetailsList() {
+  console.log("manam");
 }

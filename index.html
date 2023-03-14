@@ -4,25 +4,17 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StopWatch</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <title>IMDB clone</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
-  <body id="main">
-    <div id="StopWatch">
-      <div id="time">
-        <span class="num" id="hr"></span>
-        <span class="ish">:</span>
-        <span class="num" id="min"></span>
-        <span class="ish">:</span>
-        <span class="num" id="sec"></span>
-        <span class="ish">:</span>
-        <span class="num" id="ms"></span>
-      </div>
-      <div id="buttons">
-        <button class="button" id="reset">Reset</button>
-        <button class="button" id="start">Start/Pause</button>
-        <button class="button" id="lap">Lap</button>
-      </div>
+  <body>
+    <nav>
+      <h3><a href="#">IMDB CLONE</a></h3>
+      <input type="text" id="title" />
+      <button id="submit">Search</button>
+    </nav>
+    <div id="wrapper">
+      <div id="list"></div>
     </div>
 
     <script src="./script.js"></script>
