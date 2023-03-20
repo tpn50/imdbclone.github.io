@@ -1,92 +1,150 @@
-const wrapper = document.getElementById("wrapper");
-const title = document.getElementById("title");
-const submit = document.getElementById("submit");
+const apiKey = "dd5c0c00";
+let count = 0;
+const main = document.getElementById("main");
+const list = document.getElementById("listContainer");
+const all = document.getElementById("detailsContainer");
+let Fav = [];
+const search = document.getElementById("search");
+let finalList = document.querySelectorAll(".listTitle");
+const FAV = document.getElementById("fav");
+const showMovie = async function () {
+  try {
+    // const res = await fetch(`http://www.omdbapi.com/?apikey=${apiKey}&t=RRR`);
+    // const data = await res.json();
+    // console.log(data);
+    // let Data = data;
+    // Data = {
+    //   Title: Data.Title,
+    //   Year: Data.Year,
+    //   Rating: Data.imdbRating,
+    //   Actors: Data.Actors,
+    //   Director: Data.Director,
+    //   Plot: Data.Plot,
+    //   Released: Data.Released,
+    //   Duration: Data.Runtime,
+    //   Writer: Data.Writer,
+    //   Poster: Data.Poster,
+    // };
+    // console.log(Data);
 
-const key = document.getElementById("title");
-const list = document.getElementById("list");
-const lists = document.getElementsByClassName("lists");
-const listMovie = document.getElementsByClassName("list-movie");
-//console.log(title);
+    // // Rendering Data
 
-key.addEventListener("keyup", () => {
-  const s = title.value;
-  const movieTitle = s;
-  const apiKey = "dd5c0c00";
+    // const markup = `
 
-  const url = `http://www.omdbapi.com/?apikey=${apiKey}&t=${encodeURIComponent(
-    movieTitle
-  )}`;
+    //   <img
+    //     id="poster"
+    //     src= ${Data.Poster}
+    //     alt=""
+    //   />
+    //   <button id="bookmark">Bookmark</button>
+    //   <h1 id="movieTitle">${Data.Title}</h1>
 
-  console.log(movieTitle);
+    //   <h6 id="year">${Data.Year}</h6>
+    //   <h6 id="duration">${Data.Duration}</h6>
+    //   <p id="plot">${Data.Plot}</p>
+    //   <h4 id="director">Director :${Data.Director}</h4>
+    //   <h4 id="writer">Writer : ${Data.Writer}</h4>
+    //   <h4 id="stars">Stars : ${Data.Actors}</h4>
+    //   <h4 id="rating">IMDB Rating: ${Data.Rating}/10</h4>
 
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.Title != undefined) {
-        //console.log(data.Title);
-        let movieName = data.Title;
-        let moviePoster = data.Poster;
-        const lists = document.createElement("div");
-        lists.classList.add("lists");
-        lists.innerHTML = `<a href="" class="list-movie" style="text-decoration: none">${movieName}</a><img src=${moviePoster} class="list-img"> <button>fav</button>`;
-        list.appendChild(lists);
-      }
-    });
-});
+    // `;
+    // all.insertAdjacentHTML("afterbegin", markup);
 
-submit.addEventListener("click", showDetails);
-if (lists) {
-  for (let i = 0; i < lists.length; i++) {
-    lists[i].addEventListener("click", showDetailsList);
-  }
-}
+    search.addEventListener("keyup", show);
 
-//console.log(lists);
-/* Show Details Function................*/
-
-function showDetails() {
-  list.style.display = "none";
-  // wrapper.removeChild(list);
-  console.log(title.value);
-  const s = title.value;
-  const movieTitle = s;
-  const apiKey = "dd5c0c00";
-
-  const url = `http://www.omdbapi.com/?apikey=${apiKey}&t=${encodeURIComponent(
-    movieTitle
-  )}`;
-
-  fetch(url)
-    .then((response) => response.json())
-    .then((data) => {
+    async function show() {
+      console.log(search.value);
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${apiKey}&t=${search.value}`
+      );
+      const data = await res.json();
       console.log(data);
+      let Data = data;
+      Data = {
+        Title: Data.Title,
+        Year: Data.Year,
+        Rating: Data.imdbRating,
+        Actors: Data.Actors,
+        Director: Data.Director,
+        Plot: Data.Plot,
+        Released: Data.Released,
+        Duration: Data.Runtime,
+        Writer: Data.Writer,
+        Poster: Data.Poster,
+      };
+      const listup = `<div class="listTitle">
+      <h3>${Data.Title}</h3>
+    </div>`;
+      list.insertAdjacentHTML("beforeend", listup);
+      finalList = document.querySelectorAll(".listTitle");
 
-      let movieName = data.Title;
-      let movieYear = data.Year;
-      let moviePlot = data.Plot;
-      let movieRating = data.Ratings[0].Value;
-      let moviePoster = data.Poster;
+      let finalArray = Array.from(finalList);
+      console.log(finalArray);
 
-      const poster = document.createElement("div");
-      poster.innerHTML = `<img src="${moviePoster}" />`;
-      wrapper.appendChild(poster);
-      const movie = document.createElement("div");
-      movie.innerHTML = `<h2>${movieName}</h2>`;
-      wrapper.appendChild(movie);
-      const year = document.createElement("div");
-      year.innerHTML = `<h3>${movieYear}</h3>`;
-      wrapper.appendChild(year);
-      const plot = document.createElement("div");
-      plot.innerHTML = `<p>${moviePlot}</p>`;
-      wrapper.appendChild(plot);
-      const rating = document.createElement("div");
-      rating.innerHTML = `<p>${movieRating}</p>`;
-      wrapper.appendChild(rating);
-    })
-    .catch((error) => console.error(error));
-  //console.log(lists);
-}
+      for (let i = 0; i < finalArray.length; i++) {
+        finalArray[i].removeEventListener("click", handleclick);
+        finalArray[i].addEventListener("click", handleclick);
+      }
 
-function showDetailsList() {
-  console.log("manam");
-}
+      async function handleclick() {
+        console.log(this.innerText);
+        typeof this.innerText;
+
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${apiKey}&t=${this.innerText}`
+        );
+        const data = await res.json();
+        let Data = data;
+        Data = {
+          Title: Data.Title,
+          Year: Data.Year,
+          Rating: Data.imdbRating,
+          Actors: Data.Actors,
+          Director: Data.Director,
+          Plot: Data.Plot,
+          Released: Data.Released,
+          Duration: Data.Runtime,
+          Writer: Data.Writer,
+          Poster: Data.Poster,
+        };
+        console.log(Data);
+
+        // Rendering Data
+
+        const markup = `
+
+      <img
+        id="poster"
+        src= ${Data.Poster} 
+        alt=""
+      />
+      <button id="bookmark">Bookmark</button>
+      <h1 id="movieTitle">${Data.Title}</h1>
+
+      <h6 id="year">${Data.Year}</h6>
+      <h6 id="duration">${Data.Duration}</h6>
+      <p id="plot">${Data.Plot}</p>
+      <h4 id="director">Director :${Data.Director}</h4>
+      <h4 id="writer">Writer : ${Data.Writer}</h4>
+      <h4 id="stars">Stars : ${Data.Actors}</h4>
+      <h4 id="rating">IMDB Rating: ${Data.Rating}/10</h4>
+      
+    `;
+        all.insertAdjacentHTML("afterbegin", markup);
+        const bookmark = document.getElementById("bookmark");
+        bookmark.addEventListener("click", handleBookmark);
+        function handleBookmark() {
+          console.log(Data.Title);
+          Fav.push(Data.Title);
+          console.log(Fav);
+        }
+      }
+    }
+  } catch (err) {
+    alert(err);
+  }
+};
+
+showMovie();
+
+window.addEventListener("hashchange", showMovie);
